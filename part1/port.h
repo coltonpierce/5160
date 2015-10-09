@@ -12,10 +12,10 @@ sbit P1_0 = P1^0; // unused
 sbit P1_1 = P1^1;
 sbit P1_2 = P1^2;
 sbit P1_3 = P1^3;
-sbit P1_4 = P1^4;
-sbit P1_5 = P1^5;
-sbit P1_6 = P1^6;
-sbit P1_7 = P1^7;
+sbit ncs  = P1^4;  //used for SD card
+//sbit MISO = P1^5;	//used for SD card defined in "AT89C51RC2.h"
+sbit SCLK = P1^6;	//used for SD card
+//sbit MOSI = P1^7;	//used for SD card defined in "AT89C51RC2.h"
 
 // Port 2
 sbit SW1 = P2^0;
@@ -31,7 +31,7 @@ sbit LED4 = P2^7;
 sbit TxD_PIN = P3^1;
 sbit RxD_PIN = P3^0;
 sbit P3_2 = P3^2;
-sbit P3_3 = P3^3; // pins that are not used
+sbit P3_3 = P3^3;
 sbit P3_4 = P3^4;
 sbit P3_5 = P3^5;
 sbit RS = P3^6;

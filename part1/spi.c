@@ -1,5 +1,31 @@
 #include "main.h"
 #include "port.h"
+#include "spi.h"
+
+
+uint8_t SPI_master_init(uint32_t SCLR_FREQ)
+{
+	uint8_t divider, return_val;
+	return_val = NO_ERRORS;
+	divider = (uint8_t)(((OSC_FREQ/OSC_PER_INST)*6)/SCLR_FREQ);
+	if(divider <=2)
+		SPCON = 0x70;
+	else if(divider <=4)
+		SPCON = 0x71;
+	else if(divider <=8)
+		SPCON = 0x72;
+	else if(divider <=16)
+		SPCON = 0x73;
+	else if(divider <=32)
+		SPCON = 0xF0;	
+	else if(divider <=64)
+		SPCON = 0xF1;	
+	else if(divider <=128)
+		SPCON = 0xF2;	
+	else // divider > 128
+		return_val = ILLEGAL_CLOCKRATE;
+	return return_val;
+}
 
 
 
@@ -24,6 +50,61 @@ uint8_t SPI_transfer(uint8_t data_input, uint8_t *data_output)
 	}
 	return timeout;
 }
+
+
+uint8_t send_Acommand(uint8_t ACMD)
+{
+	uint8_t return_value[5];
+	uint8_t error_flag, error_status, index;
+	uint32_t ACMD41_argum = 0x40000000;
+	
+	
+	
+	ncs = 1;
+	for(index = 0; index < 10; index++)
+	{
+		SPI_transfer(0xFF, return_value);
+	}
+	
+	
+	// Send CMD0
+	ncs = 0;
+	error_flag = send_command(CMD0, 0);
+	if(error_flag == NO_ERRORS)
+	{
+		error_flag = get_response(1, return_value);
+	}
+	if(error_flag != NO_ERRORS)
+	{
+		LED4 = 0;
+	}
+	ncs = 1;
+	
+	
+	
+	// Send CMD8
+	if(error_flag == NO_ERRORS)
+	{
+		ncs = 0;
+		error_flag = send_command(CMD8, 0x000001AA);
+	}
+	if(error_flag == NO_ERRORS)
+	{
+		error_flag = get_response(5, return_value);
+	}
+	if(error_flag != NO_ERRORS)
+	{
+		LED4 = 0;
+	}
+	ncs = 1;
+	
+	
+		
+	
+	
+	return error_flag; 
+}
+
 
 
 uint8_t send_command(uint8_t cmd, uint32_t argum)
@@ -55,6 +136,7 @@ uint8_t send_command(uint8_t cmd, uint32_t argum)
 		error_flag = ILLEGAL_COMMAND;
 	return error_flag;
 }
+
 
 
 uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)

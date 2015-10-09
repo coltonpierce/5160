@@ -14,11 +14,11 @@ typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
 typedef unsigned long uint32_t;
 
-#define NO_ERRORS				0
-#define TIMEOUT_ERROR 	1
-#define SPI_ERROR 			2
-#define ILLEGAL_COMMAND 3
-
+#define NO_ERRORS					0
+#define TIMEOUT_ERROR 		1
+#define SPI_ERROR 				2
+#define ILLEGAL_COMMAND 	3
+#define ILLEGAL_CLOCKRATE 4
 
 
 
