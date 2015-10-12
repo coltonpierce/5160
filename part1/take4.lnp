@@ -4,5 +4,6 @@
 "memory_test.obj",
 "print_bytes.obj",
 "uart.obj",
-"spi.obj" 
+"spi.obj",
+"SDcard.obj" 
 TO "take4" 

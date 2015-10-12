@@ -36,7 +36,7 @@ uint8_t SPI_transfer(uint8_t data_input, uint8_t *data_output)
 	SPDAT = data_input;
 	do
 	{
-		test = SPSTA; // SPDAT?
+		test = SPSTA;
 		timeout++;
 	}while(((test & 0xF0) != 0xF0)&&(timeout!=0));
 	if(timeout != 0)
@@ -51,59 +51,6 @@ uint8_t SPI_transfer(uint8_t data_input, uint8_t *data_output)
 	return timeout;
 }
 
-
-uint8_t send_Acommand(uint8_t ACMD)
-{
-	uint8_t return_value[5];
-	uint8_t error_flag, error_status, index;
-	uint32_t ACMD41_argum = 0x40000000;
-	
-	
-	
-	ncs = 1;
-	for(index = 0; index < 10; index++)
-	{
-		SPI_transfer(0xFF, return_value);
-	}
-	
-	
-	// Send CMD0
-	ncs = 0;
-	error_flag = send_command(CMD0, 0);
-	if(error_flag == NO_ERRORS)
-	{
-		error_flag = get_response(1, return_value);
-	}
-	if(error_flag != NO_ERRORS)
-	{
-		LED4 = 0;
-	}
-	ncs = 1;
-	
-	
-	
-	// Send CMD8
-	if(error_flag == NO_ERRORS)
-	{
-		ncs = 0;
-		error_flag = send_command(CMD8, 0x000001AA);
-	}
-	if(error_flag == NO_ERRORS)
-	{
-		error_flag = get_response(5, return_value);
-	}
-	if(error_flag != NO_ERRORS)
-	{
-		LED4 = 0;
-	}
-	ncs = 1;
-	
-	
-		
-	
-	
-	return error_flag; 
-}
 
 
 
@@ -154,7 +101,7 @@ uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)
 		error_flag = TIMEOUT_ERROR;
 	else if(error_flag != NO_ERRORS)
 		error_flag = SPI_ERROR;
-	else if((recieve_value != 0x01)||(recieve_value != 0x00))
+	else if((recieve_value != 0x01)&&(recieve_value != 0x00))
 		error_flag = SPI_ERROR;
 	else if(num_bytes > 1)
 	{
@@ -164,6 +111,7 @@ uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)
 			array_out[index] = recieve_value;
 		}
 	}
-	SPI_transfer(0xFF, &recieve_value);
+	if(error_flag == NO_ERRORS)
+		error_flag = SPI_transfer(0xFF, &recieve_value);
 	return error_flag;
 }

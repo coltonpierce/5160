@@ -1,9 +1,10 @@
-C51 COMPILER V9.54   SPI                                                                   10/09/2015 16:45:22 PAGE 1   
+C51 COMPILER V9.53.0.0   SPI                                                               10/12/2015 16:22:15 PAGE 1   
 
 
-C51 COMPILER V9.54, COMPILATION OF MODULE SPI
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE SPI
 OBJECT MODULE PLACED IN spi.OBJ
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE spi.c OPTIMIZE(8,SPEED) DEBUG OBJECTEXTEND TABS(2)
+COMPILER INVOKED BY: \\minerfiles.mst.edu\dfs\users\mrwpp5\Desktop\C51\BIN\C51.EXE spi.c OPTIMIZE(8,SPEED) DEBUG OBJECTE
+                    -XTEND TABS(2)
 
 line level    source
 
@@ -45,7 +46,7 @@ line level    source
   36   1        SPDAT = data_input;
   37   1        do
   38   1        {
-  39   2          test = SPSTA; // SPDAT?
+  39   2          test = SPSTA;
   40   2          timeout++;
   41   2        }while(((test & 0xF0) != 0xF0)&&(timeout!=0));
   42   1        if(timeout != 0)
@@ -61,140 +62,84 @@ line level    source
   52   1      }
   53          
   54          
-  55          uint8_t send_Acommand(uint8_t ACMD)
-C51 COMPILER V9.54   SPI                                                                   10/09/2015 16:45:22 PAGE 2   
+C51 COMPILER V9.53.0.0   SPI                                                               10/12/2015 16:22:15 PAGE 2   
 
-  56          {
-  57   1        uint8_t return_value[5];
-  58   1        uint8_t error_flag, error_status, index;
-  59   1        uint32_t ACMD41_argum = 0x40000000;
-  60   1        
-  61   1        
-  62   1        
-  63   1        ncs = 1;
-  64   1        for(index = 0; index < 10; index++)
-  65   1        {
-  66   2          SPI_transfer(0xFF, return_value);
-  67   2        }
-  68   1        
-  69   1        
-  70   1        // Send CMD0
-  71   1        ncs = 0;
-  72   1        error_flag = send_command(CMD0, 0);
-  73   1        if(error_flag == NO_ERRORS)
-  74   1        {
-  75   2          error_flag = get_response(1, return_value);
-  76   2        }
-  77   1        if(error_flag != NO_ERRORS)
-  78   1        {
-  79   2          LED4 = 0;
-  80   2        }
-  81   1        ncs = 1;
-  82   1        
-  83   1        
-  84   1        
-  85   1        // Send CMD8
-  86   1        if(error_flag == NO_ERRORS)
-  87   1        {
-  88   2          ncs = 0;
-  89   2          error_flag = send_command(CMD8, 0x000001AA);
-  90   2        }
-  91   1        if(error_flag == NO_ERRORS)
-  92   1        {
-  93   2          error_flag = get_response(5, return_value);
-  94   2        }
-  95   1        if(error_flag != NO_ERRORS)
-  96   1        {
-  97   2          LED4 = 0;
-  98   2        }
-  99   1        ncs = 1;
- 100   1        
- 101   1        
- 102   1          
- 103   1        
- 104   1        
- 105   1        return error_flag; 
- 106   1      }
-*** WARNING C280 IN LINE 55 OF spi.c: 'ACMD': unreferenced local variable
-*** WARNING C280 IN LINE 58 OF spi.c: 'error_status': unreferenced local variable
- 107          
- 108          
- 109          
- 110          uint8_t send_command(uint8_t cmd, uint32_t argum)
- 111          {
- 112   1        uint8_t error_flag, send_val, return_val, index;
- 113   1        if(cmd < 64)
- 114   1        {
- 115   2          send_val = 0x40 | cmd;
-C51 COMPILER V9.54   SPI                                                                   10/09/2015 16:45:22 PAGE 3   
+  55          
+  56          
+  57          uint8_t send_command(uint8_t cmd, uint32_t argum)
+  58          {
+  59   1        uint8_t error_flag, send_val, return_val, index;
+  60   1        if(cmd < 64)
+  61   1        {
+  62   2          send_val = 0x40 | cmd;
+  63   2          error_flag = SPI_transfer(send_val, &return_val);
+  64   2          index = 24;
+  65   2          while((error_flag == NO_ERRORS)&(index<25))
+  66   2          {
+  67   3            send_val = (uint8_t)(argum >> index);
+  68   3            error_flag = SPI_transfer(send_val, &return_val);
+  69   3            index -= 8;
+  70   3          }
+  71   2          if(cmd == 0)
+  72   2            send_val = 0x95;
+  73   2          else if(cmd == 8)
+  74   2            send_val = 0x87;
+  75   2          else
+  76   2            send_val = 0x01;
+  77   2          if(error_flag == NO_ERRORS)
+  78   2            error_flag = SPI_transfer(send_val, &return_val);
+  79   2          if(error_flag == NO_ERRORS)
+  80   2            error_flag = SPI_ERROR;
+  81   2        }
+  82   1        else
+  83   1          error_flag = ILLEGAL_COMMAND;
+  84   1        return error_flag;
+  85   1      }
+  86          
+  87          
+  88          
+  89          uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)
+  90          {
+  91   1        uint8_t timeout, error_flag, recieve_value, index;
+  92   1        timeout = 0;
+  93   1        error_flag = NO_ERRORS;
+  94   1        do
+  95   1        {
+  96   2          error_flag = SPI_transfer(0xFF, &recieve_value);
+  97   2          timeout++;
+  98   2        }while((timeout!=0)&&(error_flag == NO_ERRORS)&&(recieve_value == 0xFF));
+  99   1        *array_out = recieve_value;
+ 100   1        if(timeout == 0)
+ 101   1          error_flag = TIMEOUT_ERROR;
+ 102   1        else if(error_flag != NO_ERRORS)
+ 103   1          error_flag = SPI_ERROR;
+ 104   1        else if((recieve_value != 0x01)&&(recieve_value != 0x00))
+ 105   1          error_flag = SPI_ERROR;
+ 106   1        else if(num_bytes > 1)
+ 107   1        {
+ 108   2          for(index = 1; index < num_bytes; index++)
+ 109   2          {
+ 110   3            SPI_transfer(0xFF, & recieve_value);
+ 111   3            array_out[index] = recieve_value;
+ 112   3          }
+ 113   2        }
+ 114   1        if(error_flag == NO_ERRORS)
+ 115   1          error_flag = SPI_transfer(0xFF, &recieve_value);
+ 116   1        return error_flag;
+C51 COMPILER V9.53.0.0   SPI                                                               10/12/2015 16:22:15 PAGE 3   
 
- 116   2          error_flag = SPI_transfer(send_val, &return_val);
- 117   2          index = 24;
- 118   2          while((error_flag == NO_ERRORS)&(index<25))
- 119   2          {
- 120   3            send_val = (uint8_t)(argum >> index);
- 121   3            error_flag = SPI_transfer(send_val, &return_val);
- 122   3            index -= 8;
- 123   3          }
- 124   2          if(cmd == 0)
- 125   2            send_val = 0x95;
- 126   2          else if(cmd == 8)
- 127   2            send_val = 0x87;
- 128   2          else
- 129   2            send_val = 0x01;
- 130   2          if(error_flag == NO_ERRORS)
- 131   2            error_flag = SPI_transfer(send_val, &return_val);
- 132   2          if(error_flag == NO_ERRORS)
- 133   2            error_flag = SPI_ERROR;
- 134   2        }
- 135   1        else
- 136   1          error_flag = ILLEGAL_COMMAND;
- 137   1        return error_flag;
- 138   1      }
- 139          
- 140          
- 141          
- 142          uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)
- 143          {
- 144   1        uint8_t timeout, error_flag, recieve_value, index;
- 145   1        timeout = 0;
- 146   1        error_flag = NO_ERRORS;
- 147   1        do
- 148   1        {
- 149   2          error_flag = SPI_transfer(0xFF, &recieve_value);
- 150   2          timeout++;
- 151   2        }while((timeout!=0)&&(error_flag == NO_ERRORS)&&(recieve_value == 0xFF));
- 152   1        *array_out = recieve_value;
- 153   1        if(timeout == 0)
- 154   1          error_flag = TIMEOUT_ERROR;
- 155   1        else if(error_flag != NO_ERRORS)
- 156   1          error_flag = SPI_ERROR;
- 157   1        else if((recieve_value != 0x01)||(recieve_value != 0x00))
- 158   1          error_flag = SPI_ERROR;
- 159   1        else if(num_bytes > 1)
- 160   1        {
- 161   2          for(index = 1; index < num_bytes; index++)
- 162   2          {
- 163   3            SPI_transfer(0xFF, & recieve_value);
- 164   3            array_out[index] = recieve_value;
- 165   3          }
- 166   2        }
- 167   1        SPI_transfer(0xFF, &recieve_value);
- 168   1        return error_flag;
- 169   1      }
+ 117   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    494    ----
+   CODE SIZE        =    400    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----      24
-C51 COMPILER V9.54   SPI                                                                   10/09/2015 16:45:22 PAGE 4   
-
+   DATA SIZE        =   ----      13
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

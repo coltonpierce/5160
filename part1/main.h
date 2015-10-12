@@ -19,6 +19,7 @@ typedef unsigned long uint32_t;
 #define SPI_ERROR 				2
 #define ILLEGAL_COMMAND 	3
 #define ILLEGAL_CLOCKRATE 4
+#define WRONG_RESPONCE		5
 
 
 

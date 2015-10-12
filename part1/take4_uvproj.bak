@@ -397,11 +397,6 @@
               <FileType>1</FileType>
               <FilePath>.\spi.c</FilePath>
             </File>
-            <File>
-              <FileName>SDcard.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\SDcard.c</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>

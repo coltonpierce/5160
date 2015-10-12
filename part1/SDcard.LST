@@ -1,0 +1,91 @@
+C51 COMPILER V9.53.0.0   SDCARD                                                            10/12/2015 16:22:15 PAGE 1   
+
+
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE SDCARD
+OBJECT MODULE PLACED IN SDcard.OBJ
+COMPILER INVOKED BY: \\minerfiles.mst.edu\dfs\users\mrwpp5\Desktop\C51\BIN\C51.EXE SDcard.c OPTIMIZE(8,SPEED) DEBUG OBJE
+                    -CTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "main.h"
+   2          #include "port.h"
+   3          #include "SDcard.h"
+   4          #include "spi.h"
+   5          
+   6          uint8_t SDcard_init()
+   7          {
+   8   1        uint8_t return_value[5];
+   9   1        uint8_t error_flag, error_status, index;
+  10   1        uint32_t ACMD41_argum = 0x40000000;
+  11   1        
+  12   1        
+  13   1        
+  14   1        ncs = 1;
+  15   1        for(index = 0; index < 10; index++)
+  16   1        {
+  17   2          SPI_transfer(0xFF, return_value);
+  18   2        }
+  19   1        
+  20   1        
+  21   1        // Send CMD0
+  22   1        ncs = 0;
+  23   1        error_flag = send_command(CMD0, 0);
+  24   1        if(error_flag == NO_ERRORS)
+  25   1        {
+  26   2          error_flag = get_response(1, return_value);
+  27   2        }
+  28   1        if(error_flag == NO_ERRORS)
+  29   1        {
+  30   2          if(return_value != 0x01)
+  31   2          {
+  32   3            error_flag = WRONG_RESPONCE;
+  33   3          }
+  34   2        }
+  35   1        if(error_flag != NO_ERRORS)
+  36   1        {
+  37   2          LED4 = 0;
+  38   2        }
+  39   1        ncs = 1;
+  40   1        
+  41   1        
+  42   1        
+  43   1        // Send CMD8
+  44   1        if(error_flag == NO_ERRORS)
+  45   1        {
+  46   2          ncs = 0;
+  47   2          error_flag = send_command(CMD8, 0x000001AA);
+  48   2        }
+  49   1        if(error_flag == NO_ERRORS)
+  50   1        {
+  51   2          error_flag = get_response(5, return_value);
+  52   2        }
+  53   1        if(error_flag != NO_ERRORS)
+  54   1        {
+C51 COMPILER V9.53.0.0   SDCARD                                                            10/12/2015 16:22:15 PAGE 2   
+
+  55   2          LED4 = 0;
+  56   2        }
+  57   1        ncs = 1;
+  58   1        
+  59   1        
+  60   1          
+  61   1        
+  62   1        
+  63   1        return error_flag; 
+  64   1      }
+*** WARNING C280 IN LINE 9 OF SDcard.c: 'error_status': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    124    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      11
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
