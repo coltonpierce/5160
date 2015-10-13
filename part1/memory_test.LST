@@ -1,10 +1,9 @@
-C51 COMPILER V9.53.0.0   MEMORY_TEST                                                       10/12/2015 16:22:13 PAGE 1   
+C51 COMPILER V9.54   MEMORY_TEST                                                           10/12/2015 21:08:58 PAGE 1   
 
 
-C51 COMPILER V9.53.0.0, COMPILATION OF MODULE MEMORY_TEST
+C51 COMPILER V9.54, COMPILATION OF MODULE MEMORY_TEST
 OBJECT MODULE PLACED IN memory_test.OBJ
-COMPILER INVOKED BY: \\minerfiles.mst.edu\dfs\users\mrwpp5\Desktop\C51\BIN\C51.EXE memory_test.c OPTIMIZE(8,SPEED) DEBUG
-                    - OBJECTEXTEND TABS(2)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE memory_test.c OPTIMIZE(8,SPEED) DEBUG OBJECTEXTEND TABS(2)
 
 line level    source
 
@@ -62,8 +61,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.53.0.0   MEMORY_TEST                                                       10/12/2015 16:22:13 PAGE 2   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

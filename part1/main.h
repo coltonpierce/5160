@@ -20,11 +20,9 @@ typedef unsigned long uint32_t;
 #define ILLEGAL_COMMAND 	3
 #define ILLEGAL_CLOCKRATE 4
 #define WRONG_RESPONCE		5
-
+#define FAIL_SDINIT				6
+#define WRONG_SDCARD			7
 
 
 
 #endif
-
-
-
