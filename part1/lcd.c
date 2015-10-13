@@ -21,12 +21,11 @@ void LCD_Print(uint8_t num_bytes, uint8_t *array_name)
 	if(num_bytes == 0)
 	{
 		index = 0;
-		while(value != NULL)
+		while(*(array_name + index) != NULL)
 		{
 			LCD_Write(DDRAM, *(array_name + index));
 			index++;
-		}
-		
+		}	
 	}
 	else
 	{
@@ -35,7 +34,6 @@ void LCD_Print(uint8_t num_bytes, uint8_t *array_name)
 			LCD_Write(DDRAM, *(array_name + index));
 		}
 	}
-
 
 }
 

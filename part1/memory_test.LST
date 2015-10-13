@@ -1,11 +1,11 @@
-C51 COMPILER V6.02  MEMORY_TEST                                                            09/30/2015 14:46:49 PAGE 1   
+C51 COMPILER V9.54   MEMORY_TEST                                                           10/12/2015 21:08:58 PAGE 1   
 
 
-C51 COMPILER V6.02, COMPILATION OF MODULE MEMORY_TEST
-OBJECT MODULE PLACED IN .\memory_test.OBJ
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE .\memory_test.c DEBUG OBJECTEXTEND
+C51 COMPILER V9.54, COMPILATION OF MODULE MEMORY_TEST
+OBJECT MODULE PLACED IN memory_test.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE memory_test.c OPTIMIZE(8,SPEED) DEBUG OBJECTEXTEND TABS(2)
 
-stmt level    source
+line level    source
 
    1          #include "main.h"
    2          #include "memory_test.h"

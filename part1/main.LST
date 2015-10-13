@@ -1,11 +1,11 @@
-C51 COMPILER V6.02  MAIN                                                                   09/30/2015 14:46:49 PAGE 1   
+C51 COMPILER V9.54   MAIN                                                                  10/12/2015 21:08:58 PAGE 1   
 
 
-C51 COMPILER V6.02, COMPILATION OF MODULE MAIN
-OBJECT MODULE PLACED IN .\main.OBJ
-COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE .\main.c DEBUG OBJECTEXTEND
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) DEBUG OBJECTEXTEND TABS(2)
 
-stmt level    source
+line level    source
 
    1          #include "main.h"
    2          #include "port.h"
@@ -15,55 +15,46 @@ stmt level    source
    6          #include "print_bytes.h"
    7          #include "hardware_delay.h"
    8          #include "lcd.h"
-   9          void main(void)
-  10          {
-  11   1      	
-  12   1      //	uint8_t *pntr;
-  13   1      	LED3=0;
-  14   1      	UART_Init();
-  15   1      	LCD_Init();
-  16   1      
-  17   1      
-  18   1      //	pntr = xdata_memory_init();
-  19   1      	
-  20   1      	//pntr = code_memory_init();
-  21   1      //	print_memory(pntr, 37);
-  22   1      	//LCD_Print(11, "Hello World");
-  23   1      //	LCD_Write(1, 'U');
-  24   1      	while(1)
-  25   1      	{
-  26   2      		//print_memory(pntr, 37);
-  27   2      		LED1 = 0;
-  28   2      		LED4 = 0;
-  29   2      		if(SW1 == 0)
-  30   2      		{
-  31   3      			LED2 = 0;	
-  32   3      		}
-  33   2      		else
-  34   2      		{
-  35   3      			LED2 = 1;
-  36   3      		}
-  37   2      
-  38   2      		delay_ms(1000);
-  39   2      		LED1 = 1;
-  40   2      		LED4 = 1;
-  41   2      		LCD_Write(COMMAND, LINE1);
-  42   2      		LCD_Print(16, "Coltons and Matt");
-  43   2      		LCD_Write(COMMAND, LINE2);
-  44   2      		LCD_Print(15, "hews LCD Works!");
-  45   2      		delay_ms(3000);
-  46   2      		LCD_Clear();
-  47   2      	}
-  48   1      
-  49   1      }
-  50          
+   9          #include "spi.h"
+  10          #include "SDcard.h"
+  11          void main(void)
+  12          {
+  13   1        
+  14   1      //  uint8_t *pntr;
+  15   1        LED3=0;
+  16   1        UART_Init();
+  17   1        LCD_Init();
+  18   1      
+  19   1      
+  20   1      //  pntr = xdata_memory_init();
+  21   1        
+  22   1        //pntr = code_memory_init();
+  23   1      //  print_memory(pntr, 37);
+  24   1        //LCD_Print(11, "Hello World");
+  25   1      //  LCD_Write(1, 'U');
+  26   1        while(1)
+  27   1        {
+  28   2          LED1 = 0;
+  29   2          LED4 = 0;
+  30   2      
+  31   2          delay_ms(1000);
+  32   2          LED1 = 1;
+  33   2          LED4 = 1;
+  34   2          LCD_Write(COMMAND, LINE1);
+  35   2          LCD_Print(16, "Coltons and Matt");
+  36   2          LCD_Write(COMMAND, LINE2);
+  37   2          LCD_Print(15, "hews LCD Works!");
+  38   2          delay_ms(3000);
+  39   2          LCD_Clear();
+  40   2        }
+  41   1      
+  42   1      }
+  43          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     82    ----
+   CODE SIZE        =     73    ----
    CONSTANT SIZE    =     33    ----
-C51 COMPILER V6.02  MAIN                                                                   09/30/2015 14:46:49 PAGE 2   
-
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

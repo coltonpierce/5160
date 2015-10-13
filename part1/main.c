@@ -6,6 +6,8 @@
 #include "print_bytes.h"
 #include "hardware_delay.h"
 #include "lcd.h"
+#include "spi.h"
+#include "SDcard.h"
 void main(void)
 {
 	
