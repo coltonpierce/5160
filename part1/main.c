@@ -15,7 +15,8 @@ void main(void)
 	LED3=0;
 	UART_Init();
 	LCD_Init();
-
+	SPI_master_init(uint32_t SCLR_FREQ);
+	SDcard_init();
 
 //	pntr = xdata_memory_init();
 	

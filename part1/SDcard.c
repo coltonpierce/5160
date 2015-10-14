@@ -158,35 +158,28 @@ uint8_t trans_ACMD41(uint8_t *return_value)
 	// Send ACMD41
 	
 	ncs = 0;
-	error_flag = send_command(55, 0);
 	
-	if(error_flag == NO_ERRORS)
-	{
-		timeout = 0;
-		do
-		{
-			error_flag = get_response(1, return_value);
-			timeout++;
-		}while(!(error_flag == 0x01 || error_flag == 0x00) && timeout != 0);
-		if(timeout == 0)
-			error_flag = TIMEOUT_ERROR;			
-	}
+
 	timeout = 0;
-	if(error_flag == NO_ERRORS)
+	do
 	{
-		do
-		{
+		timeout++;
+		error_flag = send_command(55, 0);
+		if(error_flag == NO_ERRORS)
+			error_flag = get_response(1, return_value);
+		if(!(return_value[0] == 0x00 || return_value[0] == 0x01))
+			error_flag = SPI_ERROR;
+		if(error_flag == NO_ERRORS)
 			error_flag = send_command(41, ACMD41_argum);
-			if(error_flag == NO_ERRORS)
-			{
-				error_flag = get_response(1, return_value);
-			}
-			timeout++;
-		}while(return_value[0] != 0x00 && timeout != 0 && error_flag == NO_ERRORS);
-		if(timeout == 0)
-		{
-			error_flag = TIMEOUT_ERROR;
-		}
+		if(error_flag == NO_ERRORS)
+			error_flag = get_response(1, return_value);
+		if(!(return_value[0] == 0x00 || return_value[0] == 0x01))
+			error_flag = SPI_ERROR;
+		timeout++;
+	}while(return_value[0] != 0x00 && timeout != 0 && error_flag == NO_ERRORS);
+	if(timeout == 0)
+	{
+		error_flag = TIMEOUT_ERROR;
 	}
 	ncs = 1;
 	

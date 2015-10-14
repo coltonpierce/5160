@@ -1,9 +1,10 @@
-C51 COMPILER V9.54   MAIN                                                                  10/13/2015 19:15:15 PAGE 1   
+C51 COMPILER V9.53.0.0   MAIN                                                              10/14/2015 16:23:42 PAGE 1   
 
 
-C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN main.OBJ
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) DEBUG OBJECTEXTEND TABS(2)
+COMPILER INVOKED BY: \\minerfiles.mst.edu\dfs\users\mrwpp5\Desktop\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) DEBUG OBJECT
+                    -EXTEND TABS(2)
 
 line level    source
 
@@ -24,43 +25,33 @@ line level    source
   15   1        LED3=0;
   16   1        UART_Init();
   17   1        LCD_Init();
-  18   1      
-  19   1      
-  20   1      //  pntr = xdata_memory_init();
-  21   1        
-  22   1        //pntr = code_memory_init();
-  23   1      //  print_memory(pntr, 37);
-  24   1        //LCD_Print(11, "Hello World");
-  25   1      //  LCD_Write(1, 'U');
-  26   1        while(1)
-  27   1        {
-  28   2          LED1 = 0;
-  29   2          LED4 = 0;
-  30   2      
-  31   2          delay_ms(1000);
-  32   2          LED1 = 1;
-  33   2          LED4 = 1;
-  34   2          LCD_Write(COMMAND, LINE1);
-  35   2          LCD_Print(16, "Coltons and Matt");
-  36   2          LCD_Write(COMMAND, LINE2);
-  37   2          LCD_Print(15, "hews LCD Works!");
-  38   2          delay_ms(3000);
-  39   2          LCD_Clear();
-  40   2        }
-  41   1      
-  42   1      }
-  43          
+  18   1        SPI_master_init(uint32_t SCLR_FREQ);
+*** ERROR C141 IN LINE 18 OF main.c: syntax error near 'uint32_t'
+  19   1        SDcard_init();
+  20   1      
+  21   1      //  pntr = xdata_memory_init();
+  22   1        
+  23   1        //pntr = code_memory_init();
+  24   1      //  print_memory(pntr, 37);
+  25   1        //LCD_Print(11, "Hello World");
+  26   1      //  LCD_Write(1, 'U');
+  27   1        while(1)
+  28   1        {
+  29   2          LED1 = 0;
+  30   2          LED4 = 0;
+  31   2      
+  32   2          delay_ms(1000);
+  33   2          LED1 = 1;
+  34   2          LED4 = 1;
+  35   2          LCD_Write(COMMAND, LINE1);
+  36   2          LCD_Print(16, "Coltons and Matt");
+  37   2          LCD_Write(COMMAND, LINE2);
+  38   2          LCD_Print(15, "hews LCD Works!");
+  39   2          delay_ms(3000);
+  40   2          LCD_Clear();
+  41   2        }
+  42   1      
+  43   1      }
+  44          
 
-
-MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     73    ----
-   CONSTANT SIZE    =     33    ----
-   XDATA SIZE       =   ----    ----
-   PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
-   IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
-END OF MODULE INFORMATION.
-
-
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
