@@ -38,7 +38,7 @@ uint8_t SPI_transfer(uint8_t data_input, uint8_t *data_output)
 	{
 		test = SPSTA;
 		timeout++;
-	}while(((test & 0xF0) != 0xF0)&&(timeout!=0));
+	}while(((test & 0x80) != 0x80)&&(timeout!=0));
 	if(timeout != 0)
 	{
 		*data_output = SPDAT;
@@ -88,7 +88,8 @@ uint8_t send_command(uint8_t cmd, uint32_t argum)
 
 uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)
 {
-	uint8_t timeout, error_flag, recieve_value, index;
+	uint8_t timeout, error_flag, recieve_value;
+	uint8_t index;
 	timeout = 0;
 	error_flag = NO_ERRORS;
 	do
@@ -107,11 +108,41 @@ uint8_t get_response(uint8_t num_bytes, uint8_t *array_out)
 	{
 		for(index = 1; index < num_bytes; index++)
 		{
-			SPI_transfer(0xFF, & recieve_value);
+			SPI_transfer(0xFF, &recieve_value);
 			array_out[index] = recieve_value;
 		}
 	}
 	if(error_flag == NO_ERRORS)
 		error_flag = SPI_transfer(0xFF, &recieve_value);
+	return error_flag;
+}
+
+
+uint8_t get_response_no_end(uint16_t num_bytes, uint8_t *array_out)
+{
+	uint8_t timeout, error_flag, recieve_value;
+	uint16_t index;
+	timeout = 0;
+	error_flag = NO_ERRORS;
+	do
+	{
+		error_flag = SPI_transfer(0xFF, &recieve_value);
+		timeout++;
+	}while((timeout!=0)&&(error_flag == NO_ERRORS)&&(recieve_value == 0xFF));
+	*array_out = recieve_value;
+	if(timeout == 0)
+		error_flag = TIMEOUT_ERROR;
+	else if(error_flag != NO_ERRORS)
+		error_flag = SPI_ERROR;
+	else if((recieve_value != 0x01)&&(recieve_value != 0x00))
+		error_flag = SPI_ERROR;
+	else if(num_bytes > 1)
+	{
+		for(index = 1; index < num_bytes; index++)
+		{
+			SPI_transfer(0xFF, &recieve_value);
+			array_out[index] = recieve_value;
+		}
+	}
 	return error_flag;
 }

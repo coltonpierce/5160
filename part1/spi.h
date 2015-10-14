@@ -14,6 +14,6 @@ uint8_t send_command(uint8_t cmd, uint32_t argum);
 
 uint8_t get_response(uint8_t num_bytes, uint8_t *array_out);
 
-
+uint8_t get_response_no_end(uint16_t num_bytes, uint8_t *array_out);
 
 #endif
