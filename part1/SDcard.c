@@ -3,6 +3,7 @@
 #include "SDcard.h"
 #include "spi.h"
 
+
 uint8_t SDcard_init()
 {
 	uint8_t return_value[5];
