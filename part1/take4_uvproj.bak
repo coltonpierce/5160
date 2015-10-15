@@ -144,7 +144,7 @@
             <RestoreToolbox>0</RestoreToolbox>
             <RestoreTracepoints>0</RestoreTracepoints>
             <RestoreSysVw>0</RestoreSysVw>
-            <UsePdscDebugDescription>0</UsePdscDebugDescription>
+            <UsePdscDebugDescription>1</UsePdscDebugDescription>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>0</TargetSelection>
@@ -396,6 +396,11 @@
               <FileName>spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>SDcard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SDcard.c</FilePath>
             </File>
           </Files>
         </Group>
